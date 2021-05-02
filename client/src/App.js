@@ -15,6 +15,8 @@ import Dashboard from './components/dashboard';
 function App() {
 
   const [user, setUser] = React.useState(null);
+  const [isAdmin, setIsAdmin] = React.useState(false);
+
   const cookies = new Cookies();
 
 
@@ -23,8 +25,7 @@ function App() {
     if(cookies.get('token')){
       UserDataService.isAuth({token: cookies.get('token')}).then(res=>{
         const newUser = {username: res.data.name,role: res.data.role};
-        console.log(newUser)
-        console.log(res)
+        setIsAdmin(newUser.role == 'admin'? true : false); 
         setUser(newUser)
       }).catch(err=>{
         if(!(window.location.pathname == '/signup' || window.location.pathname == '/login')){
@@ -106,7 +107,7 @@ function App() {
             </li>
             <li className="nav-item">
               <a onClick={logout} className="nav-link" style={{cursor:'pointer'}}>
-                Logout {user.username}
+                <strong>Logout</strong> {user.username}
               </a>
             </li>
           </div>  
@@ -141,7 +142,7 @@ function App() {
         <Route 
           path="/login"
           render={(props) => (
-            <Login {...props} login={login} />
+            <Login {...props} login={login} isAdmin = {isAdmin} />
           )}
         />
         <Route 
@@ -154,7 +155,7 @@ function App() {
           exact
           path="/createcomplaint"
           render={(props) => (
-            <CreateComplaint {...props} />
+            <CreateComplaint {...props} isAdmin = {isAdmin}/>
           )}
         />
       </Switch>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ComplaintDataService from "../services/complaint";
+import UserDataService from "../services/user"
 import Cookies from 'universal-cookie';
 
 //Complaint page to show one complaint at a time
@@ -75,7 +76,7 @@ const Complaint = props => {
         </div>
         <div className="form-group">
           <label htmlFor="status">Status</label>
-          <select class="form-control" name="status" id="status" onChange={handleInputChange} value={complaint.status}>
+          <select class="form-control" name="status" id="status" onChange={handleInputChange} value={complaint.status} disabled = {!(props.isAdmin)}>
             <option value="resolved">Resolved</option>
             <option value="pending">Pending</option>
             <option value="dismissed">Dismissed</option>

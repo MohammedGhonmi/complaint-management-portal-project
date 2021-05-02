@@ -25,13 +25,11 @@ const CreateComplaint = props => {
   };
 
   const create = () => {
-    console.log(complaint)
-    console.log(complaint,cookies.get('token'))
-
     ComplaintDataService.createComplaint(complaint,cookies.get('token'))
     .then(response => {
       console.log(response.data);
       setComplaint(response.data);
+      props.history.push('/complaints');
     })
     .catch(e => {
       console.log(e);
@@ -51,6 +49,7 @@ const CreateComplaint = props => {
             value={complaint.username}
             onChange={handleInputChange}
             name="title"
+            disabled = {props.isAdmin}
           />
         </div>
 
@@ -64,9 +63,10 @@ const CreateComplaint = props => {
             onChange={handleInputChange}
             name="description"
             rows="5"
+            disabled = {props.isAdmin}
           />
         </div>
-        <button style={{marginTop:20+"px"}} onClick={create} className="btn btn-success">
+        <button style={{marginTop:20+"px"}} onClick={create} className="btn btn-lg btn-success d-block mx-auto mt-4 px-5">
           Create
         </button>
       </div>
