@@ -20,7 +20,6 @@ function App() {
 
   useEffect(() => {
     // Update the document title using the browser API
-    console.log("dsafv")
     if(cookies.get('token')){
       UserDataService.isAuth({token: cookies.get('token')}).then(res=>{
         const newUser = {username: res.data.name,role: res.data.role};
@@ -28,8 +27,15 @@ function App() {
         console.log(res)
         setUser(newUser)
       }).catch(err=>{
+        if(!(window.location.pathname == '/signup' || window.location.pathname == '/login')){
+          window.location.href = "/login"
+        }
         console.log(err)
       });
+    }else{
+      if(!(window.location.pathname == '/signup' || window.location.pathname == '/login')){
+        window.location.href = "/login"
+      }
     }
   },[]);
 
