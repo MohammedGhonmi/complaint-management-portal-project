@@ -6,14 +6,14 @@ const userSchema = new Schema({
     type: String,
     required: true,
     unique: true,
-    min: [6, 'Must be at least 6, got {VALUE}'],
-    max: 50
+    minlength: [6, 'Must be at least 6, got {VALUE}'],
+    maxlength: 50
   },
   password: {
     type: String,
     required: true,
-    min: [6, 'Must be at least 6, got {VALUE}'],
-    max: 100
+    minlength: [6, 'Must be at least 6, got {VALUE}'],
+    maxlength: 100
   },
   role: {
     type: String,
@@ -23,12 +23,6 @@ const userSchema = new Schema({
       message: '{VALUE} is not supported'
     }
   },
-//   complaints: [
-//     { 
-//         type: Schema.Types.ObjectId,
-//         ref: 'Complaint' 
-//     }
-//   ],
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);

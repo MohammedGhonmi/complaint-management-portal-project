@@ -6,14 +6,12 @@ const complaintSchema = new Schema({
   title: {
     type: String,
     required: true,
-    min: [6, 'Must be at least 6, got {VALUE}'],
-    max: 50
+    minlength: [6, 'Must be at least 6, got {VALUE}'],
+    maxlength: 50
   },
   description: {
     type: String,
-    required: true,
-    min: [6, 'Must be at least 6, got {VALUE}'],
-    max: 500
+    maxlength: 500
   },
   status: {
     type: String,

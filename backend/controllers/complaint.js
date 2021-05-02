@@ -25,19 +25,25 @@ const create = (req, res) => {
         userId: req.user._id
     });
     
-    complaint.save()
-    .then(result => {
-        res.status(201).json({ 
-            message: "Created user successfully",
-            result: result
-        })
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(500).json({
-          error: err
-        });
-      });
+    complaint.validate(err=>{
+      if(err){
+        res.status(400).json(err)
+      }else{
+        complaint.save()
+        .then(result => {
+            res.status(201).json({ 
+                message: "Created user successfully",
+                result: result
+            })
+          })
+          .catch(err => {
+            console.log(err);
+            res.status(500).json({
+              error: err
+            });
+          });
+      }
+    })
 };
 
 // get one complaint from the database
@@ -47,7 +53,7 @@ const getOne = (req, res) => {
       if (err){
         res.status(404).json({err: err})
       }else if (!canViewComplaint(req.user, comp.userId)) {
-        res.status(401)
+        res.status(403)
         return res.json({err: 'Not Allowed'})
       }
       else{

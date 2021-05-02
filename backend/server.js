@@ -3,7 +3,6 @@ const complaintRouter = require('./routes/complaints')
 const userRouter = require('./routes/users');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const User = require('./models/user');
 
 
 //For global variables that are not shown to the outside world for security reasons
@@ -22,16 +21,7 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
 
 app.use(cors());
 app.use(express.json())
-app.use(setUser)
 
 // the routes related to the system
 app.use('/complains', complaintRouter)
 app.use('/users', userRouter)
-
-function setUser(req, res, next) {
-  const userId = req.body.userId
-  if (userId) {
-    req.user = User.find(user => user.id === userId)
-  }
-  next()
-}

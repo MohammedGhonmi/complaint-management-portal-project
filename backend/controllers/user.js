@@ -72,7 +72,13 @@ const getToken = (req, res) => {
 // signup the user into the system
 const register = async (req, res) => {
     
-    const user = new User(req.body);
+    const user = await new User(req.body);
+
+    user.validate(err=>{
+      if(err){
+        res.status(400).json(err)
+      }
+    })
     // generate salt to hash password
     const salt = await bcrypt.genSalt(10);
     // now we set user password to hashed password
@@ -80,7 +86,6 @@ const register = async (req, res) => {
 
     user.save()
     .then(result => {    
-
         const accessToken = generateAccessToken({
             _id: result._id,
             name: result.username,
