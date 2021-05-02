@@ -16,10 +16,7 @@ const Login = props => {
     setUser({ ...user, [name]: value });
   };
 
-  const login = () => {
-    props.login(user)
-    props.history.push('/');
-  }
+  const login = () => props.login(user)
 
   return (
     <div className="submit-form">

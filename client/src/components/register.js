@@ -17,11 +17,8 @@ const Register = props => {
     setUser({ ...user, [name]: value });
   };
 
-  const signup = () => {
-    props.signup(user)
-    props.history.push('/');
-  }
-
+  const signup = () => props.signup(user)
+  
   return (
     <div className="submit-form">
       <div>

@@ -27,20 +27,18 @@ const create = (req, res) => {
     
     complaint.validate(err=>{
       if(err){
-        res.status(400).json(err)
+        return res.status(400).json(err)
       }else{
         complaint.save()
         .then(result => {
-            res.status(201).json({ 
+            return res.status(201).json({ 
                 message: "Created user successfully",
                 result: result
             })
           })
           .catch(err => {
             console.log(err);
-            res.status(500).json({
-              error: err
-            });
+            return res.status(500).json(err);
           });
       }
     })

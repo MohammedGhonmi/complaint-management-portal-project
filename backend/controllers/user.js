@@ -42,7 +42,7 @@ const getToken = (req, res) => {
 
             const validPassword = await bcrypt.compare(req.body.password , thisUser.password);
             if (!validPassword){
-              res.status(400).json({ error: "Invalid Password" }).end();
+              res.status(400).json({ message: "Invalid Password" }).end();
               return;
             }
             
@@ -74,35 +74,35 @@ const register = async (req, res) => {
     
     const user = await new User(req.body);
 
-    user.validate(err=>{
+    user.validate(async(err)=>{
       if(err){
-        res.status(400).json(err)
+        return res.status(400).json(err)
+      }else {
+        // generate salt to hash password
+        const salt = await bcrypt.genSalt(10);
+        // now we set user password to hashed password
+        user.password = await bcrypt.hash(user.password, salt);
+
+        user.save()
+        .then(result => {    
+            const accessToken = generateAccessToken({
+                _id: result._id,
+                name: result.username,
+                role: result.role
+            });
+        
+            return res.status(201).json({ 
+                accessToken: accessToken,
+                message: "Created user successfully"
+            })
+          })
+          .catch(err => {
+            console.log(err);
+            return res.status(500).json(err);
+          });
       }
     })
-    // generate salt to hash password
-    const salt = await bcrypt.genSalt(10);
-    // now we set user password to hashed password
-    user.password = await bcrypt.hash(user.password, salt);
 
-    user.save()
-    .then(result => {    
-        const accessToken = generateAccessToken({
-            _id: result._id,
-            name: result.username,
-            role: result.role
-        });
-    
-        res.status(201).json({ 
-            accessToken: accessToken,
-            message: "Created user successfully"
-        })
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(500).json({
-          error: err
-        });
-      });
 
 };
 

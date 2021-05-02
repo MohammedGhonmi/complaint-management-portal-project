@@ -17,35 +17,66 @@ function App() {
   const [user, setUser] = React.useState(null);
   const cookies = new Cookies();
 
+
+  useEffect(() => {
+    // Update the document title using the browser API
+    console.log("dsafv")
+    if(cookies.get('token')){
+      UserDataService.isAuth({token: cookies.get('token')}).then(res=>{
+        const newUser = {username: res.data.name,role: res.data.role};
+        console.log(newUser)
+        console.log(res)
+        setUser(newUser)
+      }).catch(err=>{
+        console.log(err)
+      });
+    }
+  },[]);
+
   async function login(user = null) {  
 
     UserDataService.login(user).then(res=>{
       cookies.set('token', res.data.accessToken);
+      setUser(user);
+      window.location.href = "/" ;
     }).catch(err=>{
       console.log(err)
+        alert(err.message)
     });
 
-    setUser(user);
   }
 
   async function signup(user = null) {  
     
-  console.log(user)
+    console.log(user)
 
     UserDataService.register(user).then(res=>{
       cookies.set('token', res.data.accessToken);
+      setUser(user);
+      window.location.href = "/"  
     }).catch(err=>{
-      console.log(err.error)
-    });
-
-    setUser(user);
+      console.log(err)
+      if(err.code == 11000){
+        alert("User already exist")
+      }else{
+        if(err.errors){
+          let message = "";
+          if(err.errors.username){
+            message += err.errors.username.path + ": " + err.errors.username.message +"\n";
+          }
+          if(err.errors.password){
+            message += err.errors.password.path + ": " + err.errors.password.message +"\n";
+          }
+          alert(message)
+        }    
+      }
+    }); 
   }
 
   async function logout() {
-
     cookies.remove('token');
-
     setUser(null)
+    window.location.href = "/login"
   }
 
   return (
