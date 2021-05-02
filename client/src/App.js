@@ -131,7 +131,7 @@ function App() {
 
     <div className="container mt-3">
       <Switch>
-        <Route exact path="/" component={Dashboard} />
+        <Route exact path="/" render={() => (<Dashboard user={user} />)}/>
         <Route exact path={["/complaints"]} component={ComplaintsList} />
         <Route 
           path="/complaints/:id"

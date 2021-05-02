@@ -3,9 +3,9 @@ import React from "react";
 const Dashboard = props => {
 
     return (
-      <div className="submit-form">
-            Hello User
-      </div>
+      <h1 className="d-block mx-auto mt-4 px-5 text-center">
+            Hello User { props.user ? props.user.username : ''}
+      </h1>
     );
   };
   
