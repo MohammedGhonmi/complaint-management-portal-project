@@ -1,13 +1,11 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import ComplaintDataService from "../../services/complaint";
 import { Link } from "react-router-dom";
-import AuthContext from "../../store/auth-context";
 
 //Complaint list page to show all the complaints related to
 //the user or all the complaints if the user was an admin
 
 const ComplaintsList = (props) => {
-  const authCtx = useContext(AuthContext);
   const [compliants, setCompliants] = useState([]);
 
   useEffect(() => {
