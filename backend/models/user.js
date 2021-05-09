@@ -12,6 +12,7 @@ const userSchema = new Schema(
       unique: true,
       minlength: [6, "Username must be at least 6, got {VALUE}"],
       maxlength: 50,
+      lowercase: true,
     },
     password: {
       type: String,

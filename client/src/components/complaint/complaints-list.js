@@ -27,6 +27,11 @@ const ComplaintsList = (props) => {
   return (
     <div>
       <div className="row">
+        {compliants.length === 0 && (
+          <h1 className="d-block mx-auto mt-4 px-5 text-center">
+            No Complaints
+          </h1>
+        )}
         {compliants.map((complaint) => {
           return (
             <div key={complaint._id} className="col-lg-4 pb-1">
